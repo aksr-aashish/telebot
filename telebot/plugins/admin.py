@@ -174,9 +174,7 @@ async def demote(dmod):
     rank = "Admeen"  # dummy rank, lol.
     user = await get_user_from_event(dmod)
     user = user[0]
-    if user:
-        pass
-    else:
+    if not user:
         return
 
     # New rights after demotion
@@ -257,7 +255,7 @@ async def _(event):
         async for message in borg.iter_messages(
             event.chat_id, min_id=event.reply_to_msg_id, from_user=from_user
         ):
-            i = i + 1
+            i += 1
             msgs.append(message)
             if len(msgs) == 100:
                 await borg.delete_messages(event.chat_id, msgs, revoke=True)
@@ -307,7 +305,7 @@ async def _(event):
 async def get_admin(show):
     """ For .admins command, list all of the admins of the chat. """
     info = await show.client.get_entity(show.chat_id)
-    title = info.title if info.title else "this chat"
+    title = info.title or "this chat"
     mentions = f"<b>Admins in {title}:</b> \n"
     try:
         async for user in show.client.iter_participants(
@@ -347,11 +345,7 @@ async def pin(msg):
 
     options = msg.pattern_match.group(1)
 
-    is_silent = True
-
-    if options.lower() == "loud":
-        is_silent = False
-
+    is_silent = options.lower() != "loud"
     try:
         await msg.client(UpdatePinnedMessageRequest(msg.to_id, to_pin, is_silent))
     except BadRequestError:
@@ -398,7 +392,7 @@ async def kick(usr):
         await usr.client.kick_participant(usr.chat_id, user.id)
         await sleep(0.5)
     except Exception as e:
-        await eor(usr, NO_PERM + f"\n{str(e)}")
+        await eor(usr, NO_PERM + f'\n{e}')
         return
 
     if reason:
@@ -423,7 +417,7 @@ async def kick(usr):
 async def get_users(show):
     """ For .users command, list all of the users in a chat. """
     info = await show.client.get_entity(show.chat_id)
-    title = info.title if info.title else "this chat"
+    title = info.title or "this chat"
     mentions = "Users in {}: \n".format(title)
     try:
         if not show.pattern_match.group(1):
@@ -451,9 +445,8 @@ async def get_users(show):
         await eor(show, mentions)
     except MessageTooLongError:
         await eor(show, "Damn, this is a huge group. Uploading users lists as file.")
-        file = open("userslist.txt", "w+")
-        file.write(mentions)
-        file.close()
+        with open("userslist.txt", "w+") as file:
+            file.write(mentions)
         await show.client.send_file(
             show.chat_id,
             "userslist.txt",

@@ -10,10 +10,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.1
-
-    animation_ttl = range(0, 101)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "guthub":
@@ -24,6 +20,10 @@ async def _(event):
             "https://github.com/xditya/TeleBot",
             "https://github.com/spechide/UniBorg",
         ]
+
+        animation_interval = 0.1
+
+        animation_ttl = range(101)
 
         for i in animation_ttl:
 

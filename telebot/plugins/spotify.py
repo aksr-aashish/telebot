@@ -23,8 +23,9 @@ async def _(event):
         pass
     except Exception as e:
         await event.edit(
-            f"`Hmm.. Some unknown error occured!\nAborting...\nError - {str(e)}`"
+            f'`Hmm.. Some unknown error occured!\nAborting...\nError - {e}`'
         )
+
         return
     name = event.pattern_match.group(1)
     if not name:

@@ -23,10 +23,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 27)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "snake":
@@ -62,6 +58,10 @@ async def _(event):
             "◻️◻️◻️◻️◻️\n◻️◻️◻️◻️◻️\n◻️◻️◻️◻️◻️\n◻️◻️◻️◻️◻️\n◻️◻️◻️◻️◻️",
             "◻️◻️◻️◻️◻️\n◻️◼️◻️◼️◻️\n◻️◻️◻️◻️◻️\n◻️◼️◼️◼️◻️\n◻️◻️◻️◻️◻️",
         ]
+
+        animation_interval = 0.3
+
+        animation_ttl = range(27)
 
         for i in animation_ttl:
 

@@ -143,7 +143,7 @@ if bool(ENV):
     LASTFM_USERNAME = os.environ.get("LASTFM_USERNAME", None)
     LASTFM_PASSWORD_PLAIN = os.environ.get("LASTFM_PASSWORD", None)
     LASTFM_PASS = pylast.md5(LASTFM_PASSWORD_PLAIN)
-    if not LASTFM_USERNAME == "None":
+    if LASTFM_USERNAME != "None":
         lastfm = pylast.LastFMNetwork(api_key=LASTFM_API,
                                       api_secret=LASTFM_SECRET,
                                       username=LASTFM_USERNAME,

@@ -180,12 +180,8 @@ async def nekobot(event):
     if event.reply_to_msg_id:
         reply_to_id = await event.get_reply_message()
     if not text:
-        if event.is_reply:
-            if not reply_to_id.media:
-                text = reply_to_id.message
-            else:
-                await eor(event, "Give text for to write on banner, man")
-                return
+        if event.is_reply and not reply_to_id.media:
+            text = reply_to_id.message
         else:
             await eor(event, "Give text for to write on banner, man")
             return

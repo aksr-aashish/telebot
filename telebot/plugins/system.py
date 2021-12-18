@@ -36,85 +36,86 @@ async def sysdetails(sysd):
 @telebot.on(admin_cmd(pattern="version"))
 async def bot_ver(event):
     """ For .botver command, get the bot version. """
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
-        if which("git") is not None:
-            ver = await asyncrunapp(
-                "git",
-                "describe",
-                "--all",
-                "--long",
-                stdout=asyncPIPE,
-                stderr=asyncPIPE,
-            )
-            stdout, stderr = await ver.communicate()
-            verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
+    if event.text[0].isalpha() or event.text[0] in ("/", "#", "@", "!"):
+        return
+    if which("git") is not None:
+        ver = await asyncrunapp(
+            "git",
+            "describe",
+            "--all",
+            "--long",
+            stdout=asyncPIPE,
+            stderr=asyncPIPE,
+        )
+        stdout, stderr = await ver.communicate()
+        verout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
-            rev = await asyncrunapp(
-                "git",
-                "rev-list",
-                "--all",
-                "--count",
-                stdout=asyncPIPE,
-                stderr=asyncPIPE,
-            )
-            stdout, stderr = await rev.communicate()
-            revout = str(stdout.decode().strip()) + str(stderr.decode().strip())
+        rev = await asyncrunapp(
+            "git",
+            "rev-list",
+            "--all",
+            "--count",
+            stdout=asyncPIPE,
+            stderr=asyncPIPE,
+        )
+        stdout, stderr = await rev.communicate()
+        revout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
-            await event.edit(
-                "`Telebot Version: " f"{verout}" "` \n" "`Revision: " f"{revout}" "`"
-            )
-        else:
-            await event.edit(
-                f"Shame that you don't have git, you're running - {telever} anyway!"
-            )
+        await event.edit(
+            "`Telebot Version: " f"{verout}" "` \n" "`Revision: " f"{revout}" "`"
+        )
+    else:
+        await event.edit(
+            f"Shame that you don't have git, you're running - {telever} anyway!"
+        )
 
 
 @telebot.on(admin_cmd(pattern="pip(?: |$)(.*)"))
 async def pipcheck(pip):
     """ For .pip command, do a pip search. """
-    if not pip.text[0].isalpha() and pip.text[0] not in ("/", "#", "@", "!"):
-        pipmodule = pip.pattern_match.group(1)
-        if pipmodule:
-            await pip.edit("`Searching . . .`")
-            pipc = await asyncrunapp(
-                "pip3",
-                "search",
-                pipmodule,
-                stdout=asyncPIPE,
-                stderr=asyncPIPE,
-            )
+    if pip.text[0].isalpha() or pip.text[0] in ("/", "#", "@", "!"):
+        return
+    pipmodule = pip.pattern_match.group(1)
+    if pipmodule:
+        await pip.edit("`Searching . . .`")
+        pipc = await asyncrunapp(
+            "pip3",
+            "search",
+            pipmodule,
+            stdout=asyncPIPE,
+            stderr=asyncPIPE,
+        )
 
-            stdout, stderr = await pipc.communicate()
-            pipout = str(stdout.decode().strip()) + str(stderr.decode().strip())
+        stdout, stderr = await pipc.communicate()
+        pipout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
-            if pipout:
-                if len(pipout) > 4096:
-                    await pip.edit("`Output too large, sending as file`")
-                    file = open("output.txt", "w+")
+        if pipout:
+            if len(pipout) > 4096:
+                await pip.edit("`Output too large, sending as file`")
+                with open("output.txt", "w+") as file:
                     file.write(pipout)
-                    file.close()
-                    await pip.client.send_file(
-                        pip.chat_id,
-                        "output.txt",
-                        reply_to=pip.id,
-                    )
-                    remove("output.txt")
-                    return
-                await pip.edit(
-                    "**Query: **\n`"
-                    f"pip3 search {pipmodule}"
-                    "`\n**Result: **\n`"
-                    f"{pipout}"
-                    "`"
+                await pip.client.send_file(
+                    pip.chat_id,
+                    "output.txt",
+                    reply_to=pip.id,
                 )
-            else:
-                await pip.edit(
-                    "**Query: **\n`"
-                    f"pip3 search {pipmodule}"
-                    "`\n**Result: **\n`No Result Returned/False`"
-                )
+                remove("output.txt")
+                return
+            await pip.edit(
+                "**Query: **\n`"
+                f"pip3 search {pipmodule}"
+                "`\n**Result: **\n`"
+                f"{pipout}"
+                "`"
+            )
         else:
-            await pip.edit("`Use .help pip to see an example`")
+            await pip.edit(
+                "**Query: **\n`"
+                f"pip3 search {pipmodule}"
+                "`\n**Result: **\n`No Result Returned/False`"
+            )
+    else:
+        await pip.edit("`Use .help pip to see an example`")
 
 
 CMD_HELP.update(

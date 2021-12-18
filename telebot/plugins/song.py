@@ -79,7 +79,7 @@ async def download_video(tele):
         with YoutubeDL(opts) as rip:
             rip_data = rip.extract_info(url)
     except DownloadError as DE:
-        await x.edit(f"`{str(DE)}`")
+        await x.edit(f'`{DE}`')
         return
     except ContentTooShortError:
         await x.edit("`The download content was too short.`")
@@ -105,7 +105,7 @@ async def download_video(tele):
         await x.edit("`There was an error during info extraction.`")
         return
     except Exception as e:
-        await x.edit(f"{str(type(e)): {str(e)}}")
+        await x.edit(f'{str(type(e)): {e}}')
         return
     try:
         sung = str(pybase64.b64decode("QFRlbGVCb3RIZWxw"))[2:14]
@@ -172,7 +172,7 @@ async def download_video(tele):
         with YoutubeDL(opts) as rip:
             rip_data = rip.extract_info(url)
     except DownloadError as DE:
-        await x.edit(f"`{str(DE)}`")
+        await x.edit(f'`{DE}`')
         return
     except ContentTooShortError:
         await x.edit("`The download content was too short.`")
@@ -198,7 +198,7 @@ async def download_video(tele):
         await x.edit("`There was an error during info extraction.`")
         return
     except Exception as e:
-        await x.edit(f"{str(type(e)): {str(e)}}")
+        await x.edit(f'{str(type(e)): {e}}')
         return
     try:
         sung = str(pybase64.b64decode("QFRlbGVCb3RIZWxw"))[2:14]

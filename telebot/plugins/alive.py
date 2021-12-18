@@ -1,5 +1,6 @@
 # For @TeleBotHelp
 """Check if your userbot is working."""
+
 import time
 from datetime import datetime
 from io import BytesIO
@@ -14,15 +15,12 @@ from telebot.telebotConfig import Config, Var
 # ======CONSTANTS=========#
 CUSTOM_ALIVE = (
     Var.CUSTOM_ALIVE
-    if Var.CUSTOM_ALIVE
-    else "Hey! I'm alive. All systems online and functioning normally!"
+    or "Hey! I'm alive. All systems online and functioning normally!"
 )
-ALV_PIC = Var.ALIVE_PIC if Var.ALIVE_PIC else None
-telemoji = Var.CUSTOM_ALIVE_EMOJI if Var.CUSTOM_ALIVE_EMOJI else "**✵**"
-if Config.SUDO_USERS:
-    sudo = "Enabled"
-else:
-    sudo = "Disabled"
+
+ALV_PIC = Var.ALIVE_PIC or None
+telemoji = Var.CUSTOM_ALIVE_EMOJI or "**✵**"
+sudo = "Enabled" if Config.SUDO_USERS else "Disabled"
 # ======CONSTANTS=========#
 
 
@@ -34,10 +32,7 @@ def get_readable_time(seconds: int) -> str:
 
     while count < 4:
         count += 1
-        if count < 3:
-            remainder, result = divmod(seconds, 60)
-        else:
-            remainder, result = divmod(seconds, 24)
+        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
         if seconds == 0 and remainder == 0:
             break
         time_list.append(int(result))
@@ -67,7 +62,7 @@ async def amireallyalive(alive):
     (end - start).microseconds / 1000
     uptime = get_readable_time((time.time() - StartTime))
     if ALV_PIC:
-        tele = f"**Welcome To TeleBot **\n\n"
+        tele = '**Welcome To TeleBot **\n\n'
         tele += f"`{CUSTOM_ALIVE}`\n\n"
         tele += (
             f"{telemoji} **Telethon version**: `1.17`\n{telemoji} **Python**: `3.8.3`\n"

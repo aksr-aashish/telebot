@@ -47,7 +47,7 @@ async def _(event):
         )
         await x.edit(output_str)
     except Exception as exc:
-        await x.edit(f"Error\n `{str(exc)}`")
+        await x.edit(f'Error\n `{exc}`')
 
 
 CMD_HELP.update(

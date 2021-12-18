@@ -24,12 +24,12 @@ from telethon.tl.functions.users import GetFullUserRequest
 swapi = os.environ.get("SPAMWATCH_API_KEY", None)
 
 
-@telebot.on(admin_cmd(pattern=f"ustat(?: |$)(.*)"))
-@telebot.on(sudo_cmd(pattern=f"ustat(?: |$)(.*)", allow_sudo=True))
+@telebot.on(admin_cmd(pattern='ustat(?: |$)(.*)'))
+@telebot.on(sudo_cmd(pattern='ustat(?: |$)(.*)', allow_sudo=True))
 async def _(event):
     sender = await event.get_sender()
     me = await event.client.get_me()
-    if not sender.id == me.id:
+    if sender.id != me.id:
         tele = await event.reply("`Processing...`")
     else:
         tele = await event.edit("`Processing...`")
@@ -55,10 +55,9 @@ async def _(event):
     except BaseException:
         pass
     spambot = data = None
-    if data:
-        if data and data["ok"]:
-            reason = f"[Banned by Combot Anti Spam](https://combot.org/cas/query?u={check_user.id})"
-            spambot = True
+    if data and data["ok"]:
+        reason = f"[Banned by Combot Anti Spam](https://combot.org/cas/query?u={check_user.id})"
+        spambot = True
     if spambot:
         sbot = "Yes"
         sn = reason
@@ -102,10 +101,9 @@ async def get_full_user(event):
                     or previous_message.forward.channel_id
                 )
             )
-            return ruser, None
         else:
             ruser = await event.client(GetFullUserRequest(previous_message.from_id))
-            return ruser, None
+        return ruser, None
     else:
         input_str = None
         try:

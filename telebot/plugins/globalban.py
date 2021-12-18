@@ -29,7 +29,7 @@ client = bot
 async def get_user_from_event(event):
     args = event.pattern_match.group(1).split(":", 1)
     extra = None
-    if event.reply_to_msg_id and not len(args) == 2:
+    if event.reply_to_msg_id and len(args) != 2:
         previous_message = await event.get_reply_message()
         user_obj = await event.client.get_entity(previous_message.from_id)
         extra = event.pattern_match.group(1)
@@ -40,7 +40,7 @@ async def get_user_from_event(event):
         if user.isnumeric():
             user = int(user)
         if not user:
-            await eor(event, f"* Pass the user's username, id or reply!**")
+            await eor(event, "* Pass the user's username, id or reply!**")
             return
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
@@ -68,32 +68,33 @@ async def get_user_from_id(user, event):
 
 @telebot.on(ChatAction)
 async def handler(tele):
-    if tele.user_joined or tele.user_added:
-        try:
-            from telebot.plugins.sql_helper.gmute_sql import is_gmuted
+    if not tele.user_joined and not tele.user_added:
+        return
+    try:
+        from telebot.plugins.sql_helper.gmute_sql import is_gmuted
 
-            guser = await tele.get_user()
-            gmuted = is_gmuted(guser.id)
-        except BaseException:
-            return
-        if gmuted:
-            for i in gmuted:
-                if i.sender == str(guser.id):
-                    chat = await tele.get_chat()
-                    admin = chat.admin_rights
-                    creator = chat.creator
-                    if admin or creator:
-                        try:
-                            await client.edit_permissions(
-                                tele.chat_id, guser.id, view_messages=False
-                            )
-                            await tele.reply(
-                                f"** Gbanned User Joined!!** \n"
-                                f"**Victim Id**: [{guser.id}](tg://user?id={guser.id})\n"
-                                f"**Action **  : `Banned`"
-                            )
-                        except BaseException:
-                            return
+        guser = await tele.get_user()
+        gmuted = is_gmuted(guser.id)
+    except BaseException:
+        return
+    if gmuted:
+        for i in gmuted:
+            if i.sender == str(guser.id):
+                chat = await tele.get_chat()
+                admin = chat.admin_rights
+                creator = chat.creator
+                if admin or creator:
+                    try:
+                        await client.edit_permissions(
+                            tele.chat_id, guser.id, view_messages=False
+                        )
+                        await tele.reply(
+                            f"** Gbanned User Joined!!** \n"
+                            f"**Victim Id**: [{guser.id}](tg://user?id={guser.id})\n"
+                            f"**Action **  : `Banned`"
+                        )
+                    except BaseException:
+                        return
 
 
 @telebot.on(admin_cmd(pattern="gban(?: |$)(.*)"))
@@ -101,12 +102,12 @@ async def gspider(rk):
     lazy = rk
     sender = await lazy.get_sender()
     me = await lazy.client.get_me()
-    if not sender.id == me.id:
+    if sender.id != me.id:
         rkp = await lazy.reply("`processing...`")
     else:
         rkp = await lazy.edit("`processing...`")
     me = await rk.client.get_me()
-    await rkp.edit(f"**Global Banning User!!**")
+    await rkp.edit('**Global Banning User!!**')
     my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
     f"@{me.username}" if me.username else my_mention
     await rk.get_chat()
@@ -141,7 +142,7 @@ async def gspider(rk):
             for d in await rk.client.get_dialogs()
             if (d.is_group or d.is_channel)
         ]
-        await rkp.edit(f"**Gbanning user!\nIn progress...**")
+        await rkp.edit('**Gbanning user!\nIn progress...**')
         for i in testrk:
             try:
                 await rk.client.edit_permissions(i, user, view_messages=False)
@@ -149,10 +150,10 @@ async def gspider(rk):
             except BaseException:
                 b += 1
     else:
-        await rkp.edit(f"**Reply to a user !! **")
+        await rkp.edit('**Reply to a user !! **')
     try:
         if gmute(user.id) is False:
-            return await rkp.edit(f"**Error! User probably already gbanned.**")
+            return await rkp.edit('**Error! User probably already gbanned.**')
     except BaseException:
         pass
     return await rkp.edit(
@@ -165,12 +166,12 @@ async def gspider(rk):
     lazy = rk
     sender = await lazy.get_sender()
     me = await lazy.client.get_me()
-    if not sender.id == me.id:
+    if sender.id != me.id:
         rkp = await lazy.reply("`Processing...`")
     else:
         rkp = await lazy.edit("`Processing...`")
     me = await rk.client.get_me()
-    await rkp.edit(f"**Requesting  to ungban user!**")
+    await rkp.edit('**Requesting  to ungban user!**')
     my_mention = "[{}](tg://user?id={})".format(me.first_name, me.id)
     f"@{me.username}" if me.username else my_mention
     await rk.get_chat()
@@ -188,10 +189,10 @@ async def gspider(rk):
         if not reason:
             reason = "Private"
     except BaseException:
-        return await rkp.edit(f"**Error! Unknown user.**")
+        return await rkp.edit('**Error! Unknown user.**')
     if user:
         if user.id == 719195224:
-            return await rkp.edit(f"**Error! cant ungban this user.**")
+            return await rkp.edit('**Error! cant ungban this user.**')
         try:
             from telebot.plugins.sql_helper.gmute_sql import ungmute
         except BaseException:
@@ -205,7 +206,7 @@ async def gspider(rk):
             for d in await rk.client.get_dialogs()
             if (d.is_group or d.is_channel)
         ]
-        await rkp.edit(f"**Requesting  to ungban user!\nUnban in progress...**")
+        await rkp.edit('**Requesting  to ungban user!\nUnban in progress...**')
         for i in testrk:
             try:
                 await rk.client.edit_permissions(i, user, send_messages=True)
@@ -213,10 +214,10 @@ async def gspider(rk):
             except BaseException:
                 b += 1
     else:
-        await rkp.edit(f"**Reply to a user !! **")
+        await rkp.edit('**Reply to a user !! **')
     try:
         if ungmute(user.id) is False:
-            return await rkp.edit(f"**Error! User probably already ungbanned.**")
+            return await rkp.edit('**Error! User probably already ungbanned.**')
     except BaseException:
         pass
     return await rkp.edit(

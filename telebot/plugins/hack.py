@@ -19,10 +19,6 @@ async def _(event):
 
         return
 
-    animation_interval = 2
-
-    animation_ttl = range(0, 11)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "hack":
@@ -42,6 +38,10 @@ async def _(event):
             "`Hacking... 100%\n█████████HACKED███████████ `",
             "`Targeted Account Hacked...\n\n `All data stored in ./hacked`",
         ]
+
+        animation_interval = 2
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 

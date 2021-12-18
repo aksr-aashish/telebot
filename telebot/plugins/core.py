@@ -126,7 +126,7 @@ async def load(event):
         await event.edit(f"TeleBot has successfully loaded {shortname}")
     except Exception as e:
         await event.edit(
-            f"TeleBot could not load {shortname} because of the following error.\n{str(e)}"
+            f'TeleBot could not load {shortname} because of the following error.\n{e}'
         )
 
 
@@ -138,7 +138,7 @@ async def install(event):
         event.chat_id, None, search=".py", filter=InputMessagesFilterDocument
     )
     total = int(documentss.total)
-    total_doxx = range(0, total)
+    total_doxx = range(total)
     b = await event.client.send_message(
         event.chat_id,
         f"**Installing {total} plugins...**\n`This msg will be deleted after the installation gets completed`",

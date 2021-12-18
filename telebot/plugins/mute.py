@@ -20,7 +20,7 @@ async def startmute(event):
         userid = event.pattern_match.group(1)
     elif reply is not None:
         userid = reply.sender_id
-    elif private is True:
+    elif private:
         userid = event.chat_id
     else:
         return await eor(
@@ -29,18 +29,14 @@ async def startmute(event):
     chat_id = event.chat_id
     chat = await event.get_chat()
     if "admin_rights" in vars(chat) and vars(chat)["admin_rights"] is not None:
-        if chat.admin_rights.delete_messages is True:
-            pass
-        else:
+        if chat.admin_rights.delete_messages is not True:
             return await eor(
                 event,
                 "You can't mute a person if you dont have delete messages permission",
             )
     elif "creator" in vars(chat):
         pass
-    elif private:
-        pass
-    else:
+    elif not private:
         return await eor(event, "You can't mute a person without admin rights")
     if is_muted(userid, chat_id):
         return await eor(event, "This user is already muted in this chat")
@@ -67,7 +63,7 @@ async def endmute(event):
         userid = event.pattern_match.group(1)
     elif reply is not None:
         userid = reply.sender_id
-    elif private is True:
+    elif private:
         userid = event.chat_id
     else:
         return await eor(

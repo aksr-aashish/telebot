@@ -92,13 +92,13 @@ async def _(event):
     recent = 0
     await eor(event, "Searching Participant Lists.")
     async for i in borg.iter_participants(event.chat_id):
-        p = p + 1
+        p += 1
         #
         # Note that it's "reversed". You must set to ``True`` the permissions
         # you want to REMOVE, and leave as ``None`` those you want to KEEP.
         rights = ChatBannedRights(until_date=None, view_messages=True)
         if isinstance(i.status, UserStatusEmpty):
-            nostat = nostat + 1
+            nostat += 1
             if "nostat" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -106,9 +106,9 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         if isinstance(i.status, UserStatusLastMonth):
-            onemonth = onemonth + 1
+            onemonth += 1
             if "onemonth" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -116,9 +116,9 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         if isinstance(i.status, UserStatusLastWeek):
-            oneweek = oneweek + 1
+            oneweek += 1
             if "oneweek" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -126,9 +126,9 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         if isinstance(i.status, UserStatusOffline):
-            offline = offline + 1
+            offline += 1
             if "offline" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -136,9 +136,9 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         if isinstance(i.status, UserStatusOnline):
-            online = online + 1
+            online += 1
             if "online" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -146,9 +146,9 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         if isinstance(i.status, UserStatusRecently):
-            recent = recent + 1
+            recent += 1
             if "recent" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -156,9 +156,9 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         if i.bot:
-            bots = bots + 1
+            bots += 1
             if "bots" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
@@ -166,18 +166,18 @@ async def _(event):
                     e.append(str(e))
                     break
                 else:
-                    c = c + 1
+                    c += 1
         elif i.deleted:
-            delacc = delacc + 1
+            delacc += 1
             if "delacc" in input_str:
                 status, e = await ban_user(event.chat_id, i, rights)
                 if not status:
                     await eor(event, "I need admin priveleges to perform this action!")
                     e.append(str(e))
                 else:
-                    c = c + 1
+                    c += 1
         elif i.status is None:
-            n = n + 1
+            n += 1
     if input_str:
         required_string = """TeleBot has Kicked {} / {} users, out of which -
 Deleted Accounts: {}

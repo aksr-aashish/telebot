@@ -31,16 +31,13 @@ async def _(event):
             chat = await event.get_chat()
             me = await bot.get_me()
 
-            title = chat.title if chat.title else "this chat"
+            title = chat.title or "this chat"
             participants = await event.client.get_participants(chat)
             count = len(participants)
             mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
             first = a_user.first_name
             last = a_user.last_name
-            if last:
-                fullname = f"{first} {last}"
-            else:
-                fullname = first
+            fullname = f"{first} {last}" if last else first
             username = (
                 f"@{me.username}" if me.username else f"[Me](tg://user?id={me.id})"
             )
@@ -73,11 +70,11 @@ async def _(event):
     if msg and msg.media:
         bot_api_file_id = pack_bot_file_id(msg.media)
         add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id)
-        await eor(event, "Welcome note saved. ")
     else:
         input_str = event.text.split(None, 1)
         add_welcome_setting(event.chat_id, input_str[1], True, 0, None)
-        await eor(event, "Welcome note saved. ")
+
+    await eor(event, "Welcome note saved. ")
 
 
 @telebot.on(admin_cmd(pattern="clearwelcome"))  # pylint:disable=E0602

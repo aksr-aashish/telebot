@@ -20,9 +20,8 @@ async def coder_print(event):
     a = await event.client.download_media(
         await event.get_reply_message(), Var.TEMP_DOWNLOAD_DIRECTORY
     )
-    s = open(a, "r")
-    c = s.read()
-    s.close()
+    with open(a, "r") as s:
+        c = s.read()
     pygments.highlight(
         f"{c}",
         Python3Lexer(),

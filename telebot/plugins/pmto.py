@@ -15,9 +15,7 @@ async def pmto(event):
         chat_id = int(chat_id)
     except BaseException:
         pass
-    msg = ""
-    for i in b[1:]:
-        msg += i + " "
+    msg = "".join(i + " " for i in b[1:])
     if msg == "":
         return
     try:

@@ -102,7 +102,7 @@ async def _(event):
 
     animation_interval = 0.3
 
-    animation_ttl = range(0, 12)
+    animation_ttl = range(12)
 
     await event.edit("Police")
 
@@ -131,7 +131,7 @@ async def _(event):
 # By @xditya. Kangers keep credits xD
 
 
-@telebot.on(admin_cmd(pattern=f"smoon", outgoing=True))
+@telebot.on(admin_cmd(pattern='smoon', outgoing=True))
 async def _(event):
 
     if event.fwd_from:
@@ -140,7 +140,7 @@ async def _(event):
 
     animation_interval = 0.1
 
-    animation_ttl = range(0, 101)
+    animation_ttl = range(101)
 
     # input_str = event.pattern_match.group(1)
 
@@ -167,7 +167,7 @@ async def _(event):
 
 
 # By @xditya. Kangers keep credits xD
-@telebot.on(admin_cmd(pattern=f"tmoon", outgoing=True))
+@telebot.on(admin_cmd(pattern='tmoon', outgoing=True))
 async def _(event):
 
     if event.fwd_from:
@@ -176,7 +176,7 @@ async def _(event):
 
     animation_interval = 0.1
 
-    animation_ttl = range(0, 117)
+    animation_ttl = range(117)
 
     # input_str = event.pattern_match.group(1)
 
@@ -238,7 +238,7 @@ async def _(event):
 
     animation_interval = 0.5
 
-    animation_ttl = range(0, 117)
+    animation_ttl = range(117)
 
     # input_str = event.pattern_match.group(1)
 
@@ -291,7 +291,7 @@ async def _(event):
         await event.edit(animation_chars[i % 117])
 
 
-@telebot.on(admin_cmd(pattern=f"plane", outgoing=True))
+@telebot.on(admin_cmd(pattern='plane', outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -326,7 +326,7 @@ async def _(event):
 
     animation_interval = 0.3
 
-    animation_ttl = range(0, 12)
+    animation_ttl = range(12)
 
     await event.edit("Police")
 
@@ -355,7 +355,7 @@ async def _(event):
 # By @xditya. Kangers keep credits xD
 
 
-@telebot.on(admin_cmd(pattern=f"rain", outgoing=True))
+@telebot.on(admin_cmd(pattern='rain', outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -369,7 +369,7 @@ async def _(event):
 # By @xditya. Kangers keep credits xD
 
 
-@telebot.on(admin_cmd(pattern=f"snake", outgoing=True))
+@telebot.on(admin_cmd(pattern='snake', outgoing=True))
 async def _(event):
 
     if event.fwd_from:
@@ -378,7 +378,7 @@ async def _(event):
 
     animation_interval = 0.3
 
-    animation_ttl = range(0, 27)
+    animation_ttl = range(27)
 
     await event.edit("snake..")
 
@@ -418,12 +418,12 @@ async def _(event):
         await event.edit(animation_chars[i % 27])
 
 
-@telebot.on(admin_cmd(pattern=f"solarsystem", outgoing=True))
+@telebot.on(admin_cmd(pattern='solarsystem', outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
     animation_interval = 0.1
-    animation_ttl = range(0, 549755813888)
+    animation_ttl = range(549755813888)
     await event.edit("solarsystem")
     animation_chars = [
         "`◼️◼️◼️◼️◼️\n◼️◼️◼️◼️☀\n◼️◼️🌎◼️◼️\n🌕◼️◼️◼️◼️\n◼️◼️◼️◼️◼️`",
@@ -591,7 +591,7 @@ async def _(event):
 # By @xditya. Kangers keep credits xD
 
 
-@telebot.on(admin_cmd(pattern=f"virus", outgoing=True))
+@telebot.on(admin_cmd(pattern='virus', outgoing=True))
 async def _(event):
 
     if event.fwd_from:
@@ -600,7 +600,7 @@ async def _(event):
 
     animation_interval = 5
 
-    animation_ttl = range(0, 30)
+    animation_ttl = range(30)
 
     # input_str = event.pattern_match.group(1)
 
@@ -735,10 +735,6 @@ async def _(event):
 
         return
 
-    animation_interval = 1.5
-
-    animation_ttl = range(0, 11)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "music":
@@ -758,6 +754,10 @@ async def _(event):
             "⬤⬤◯ 80% ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`✖️`\n\n⠀⠀⠀⠀⠀[cee jay Music Player](tg://user?id=689811472)\n\n⠀⠀⠀⠀**Now Playing:Kamasutra BGM**\n\n**00:09** ▰▰▰▰▰▰▰▰▰▱ **00:10**\n\n⠀⠀⠀⠀⠀`🔂` `⏮️` `⏪️` `⏸️` `⏩️` `⏭️`\n\n**⠀Next Song:** __I Am Sexy And I Know It.__\n\n⠀⠀⠀⠀**⠀Device: Nokia 1100**",
             "⬤⬤◯ 80% ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`✖️`\n\n⠀⠀⠀⠀⠀[cee jay Music Player](tg://user?id=689811472)\n\n⠀⠀⠀⠀**Now Playing:Kamasutra BGM**\n\n**00:10** ▰▰▰▰▰▰▰▰▰▰ **00:10**\n\n⠀⠀⠀⠀⠀`🔂` `⏮️` `⏪️` `⏺️` `⏩️` `⏭️`\n\n**⠀Next Song:** __I Am Sexy And I Know It.__\n\n⠀⠀⠀⠀**⠀Device: Nokia 1100**",
         ]
+
+        animation_interval = 1.5
+
+        animation_ttl = range(11)
 
         for i in animation_ttl:
 
@@ -783,10 +783,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 9)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "unoob":
@@ -805,6 +801,10 @@ async def _(event):
             "EvErYbOdY iZ BiGGeSt NoOoB uNtiL YoU aRriVe 😈",
         ]
 
+        animation_interval = 0.5
+
+        animation_ttl = range(9)
+
         for i in animation_ttl:
 
             await event.edit(animation_chars[i % 9])
@@ -817,10 +817,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 9)
 
     input_str = event.pattern_match.group(1)
 
@@ -840,6 +836,10 @@ async def _(event):
             "EvErYbOdY iZ BiGGeSt NoOoB uNtiL i aRriVe 😈",
         ]
 
+        animation_interval = 0.5
+
+        animation_ttl = range(9)
+
         for i in animation_ttl:
 
             await event.edit(animation_chars[i % 9])
@@ -852,10 +852,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 8)
 
     input_str = event.pattern_match.group(1)
 
@@ -874,6 +870,10 @@ async def _(event):
             "EvErYbOdY iZ PeRu uNtiL YoU aRriVe 😈",
         ]
 
+        animation_interval = 0.5
+
+        animation_ttl = range(8)
+
         for i in animation_ttl:
 
             await event.edit(animation_chars[i % 8])
@@ -886,10 +886,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 8)
 
     input_str = event.pattern_match.group(1)
 
@@ -907,6 +903,10 @@ async def _(event):
             "😈",
             "EvErYbOdY iZ PeRu uNtiL i aRriVe 😈",
         ]
+
+        animation_interval = 0.5
+
+        animation_ttl = range(8)
 
         for i in animation_ttl:
 
@@ -1055,10 +1055,7 @@ emojis = {
     "f": "😂😂😂😂😂😂😂😂\n😂😂😂😂😂😂😂😂😂\n😂😂\n😂😂\n😂😂😂😂😂😂\n😂😂😂😂😂😂\n😂😂\n😂😂\n😂😂\n😂😂\n😂😂",
 }
 
-unpacked_emojis = ""
-
-for emoji in emojis:
-    unpacked_emojis += f"`{emoji}`\n"
+unpacked_emojis = "".join(f"`{emoji}`\n" for emoji in emojis)
 
 # this dictionary is a mess but meh
 ascii = {
@@ -1071,10 +1068,7 @@ ascii = {
     "youjoined": "━━━━━┓ \n┓┓┓┓┓┃\n┓┓┓┓┓┃　ヽ○ノ ⇦ Me When \n┓┓┓┓┓┃.      /　        You Joined\n┓┓┓┓┓┃  ノ) \n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃\n┓┓┓┓┓┃ ",
 }
 
-unpacked_ascii = ""
-
-for art in ascii:
-    unpacked_ascii += f"{art}\n"
+unpacked_ascii = "".join(f"{art}\n" for art in ascii)
 
 
 @telebot.on(admin_cmd(pattern="oof ?(.*)"))
@@ -1088,7 +1082,7 @@ async def _(event):
         oof = int(oof)
     except BaseException:
         return await event.edit("Count must be an integer!")
-    oof = int(oof / 2)
+    oof //= 2
     output = ""
     for _ in range(oof):
         output += "Oo"

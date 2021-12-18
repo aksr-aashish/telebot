@@ -12,9 +12,11 @@ async def _(event):
     if event.fwd_from:
         return
     result = await borg(functions.channels.GetAdminedPublicChannelsRequest())
-    output_str = ""
-    for channel_obj in result.chats:
-        output_str += f"- {channel_obj.title} @{channel_obj.username} \n"
+    output_str = "".join(
+        f"- {channel_obj.title} @{channel_obj.username} \n"
+        for channel_obj in result.chats
+    )
+
     await event.edit(output_str)
 
 

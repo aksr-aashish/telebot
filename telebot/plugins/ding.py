@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.3
-
-    animation_ttl = range(0, 10)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "ding":
@@ -40,6 +36,10 @@ async def _(event):
             "🔴⬛⬛⬜⬜\n⬜⬜⬜⬜⬜\n⬜⬜⬜⬜⬜",
             "⬜⬜⬜⬜⬜\n⬜ [BECOME A PERU](https://github.com/Xditya/TeleBot/) ⬜\n⬜⬜⬜⬜⬜",
         ]
+
+        animation_interval = 0.3
+
+        animation_ttl = range(10)
 
         for i in animation_ttl:
 

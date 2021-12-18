@@ -31,17 +31,13 @@ async def sudo(event):
     if sudo == "True":
         await eor(event, f"**TeleBot**\nSudo - `Enabled`\nSudo user(s) - `{users}`")
     else:
-        await eor(event, f"**TeleBot**\nSudo - `Disabled`")
+        await eor(event, '**TeleBot**\nSudo - `Disabled`')
 
 
 @telebot.on(admin_cmd(pattern="prefix"))
 async def handler(event):
     hndlr = Config.CMD_HNDLR
-    if hndlr == r"\.":
-        x = "."
-    else:
-        x = Config.CMD_HNDLR
-
+    x = "." if hndlr == r"\." else Config.CMD_HNDLR
     sudohndlr = Config.SUDO_HNDLR
     await eor(event, f"Command Handler - {x}\nSudo Handler - {sudohndlr}")
 
@@ -61,11 +57,8 @@ async def tb(event):
     try:
         target = await get_user(event)
     except Exception:
-        await ok.edit(f"Reply to a user.")
-    if sudousers:
-        newsudo = f"{sudousers} {target}"
-    else:
-        newsudo = f"{target}"
+        await ok.edit('Reply to a user.')
+    newsudo = f"{sudousers} {target}" if sudousers else f"{target}"
     await ok.edit(f"Added `{target}` as a sudo user. Restarting.. Give me a minute...")
     heroku_var[telebot] = newsudo
 
@@ -81,5 +74,4 @@ async def get_user(event):
             replied_user = await event.client(
                 GetFullUserRequest(previous_message.sender_id)
             )
-    target = replied_user.user.id
-    return target
+    return replied_user.user.id

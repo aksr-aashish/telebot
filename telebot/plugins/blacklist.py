@@ -36,8 +36,9 @@ async def on_new_message(event):
 async def on_add_black_list(event):
     text = event.pattern_match.group(1)
     to_blacklist = list(
-        set(trigger.strip() for trigger in text.split("\n") if trigger.strip())
+        {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
     )
+
     for trigger in to_blacklist:
         sql.add_to_blacklist(event.chat_id, trigger.lower())
     await eor(
@@ -79,12 +80,14 @@ async def on_view_blacklist(event):
 async def on_delete_blacklist(event):
     text = event.pattern_match.group(1)
     to_unblacklist = list(
-        set(trigger.strip() for trigger in text.split("\n") if trigger.strip())
+        {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
     )
-    successful = 0
-    for trigger in to_unblacklist:
-        if sql.rm_from_blacklist(event.chat_id, trigger.lower()):
-            successful += 1
+
+    successful = sum(
+        bool(sql.rm_from_blacklist(event.chat_id, trigger.lower()))
+        for trigger in to_unblacklist
+    )
+
     await eor(event, f"Removed {successful} / {len(to_unblacklist)} from the blacklist")
 
 

@@ -13,7 +13,7 @@ async def _(event):
     if event.reply_to_msg_id:
         event.reply_to_msg_id
 
-    for I in range(NO_OF_SCSS):
+    for _ in range(NO_OF_SCSS):
         await event.client(
             functions.messages.SendScreenshotNotificationRequest(
                 peer=event.chat_id, reply_to_msg_id=42

@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 1
-
-    animation_ttl = range(0, 19)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "mtn":
@@ -49,6 +45,10 @@ async def _(event):
             "`▁ ▂ ▄ ▅ ▆ ▇ █`",
             "**MTN Network Boosted....**",
         ]
+
+        animation_interval = 1
+
+        animation_ttl = range(19)
 
         for i in animation_ttl:
 

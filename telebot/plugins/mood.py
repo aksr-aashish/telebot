@@ -7,7 +7,7 @@ from telethon.tl import functions
 from telebot import ALIVE_NAME, CMD_HELP
 from telebot.utils import admin_cmd
 
-TELENAME = ALIVE_NAME if ALIVE_NAME else "TeleBot"
+TELENAME = ALIVE_NAME or "TeleBot"
 
 # set your mood
 

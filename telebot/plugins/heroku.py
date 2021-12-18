@@ -91,11 +91,10 @@ async def variable(var):
         except IndexError:
             return await toput.edit("`Please specify ConfigVars you want to delete`")
         await asyncio.sleep(1.5)
-        if variable in heroku_var:
-            await toput.edit(f"`{variable}` **has been successfully deleted**")
-            del heroku_var[variable]
-        else:
+        if variable not in heroku_var:
             return await toput.edit(f"`{variable}`** doesn't exist**")
+        await toput.edit(f"`{variable}` **has been successfully deleted**")
+        del heroku_var[variable]
 
 
 @telebot.on(admin_cmd(pattern="usage"))

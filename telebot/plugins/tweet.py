@@ -60,9 +60,10 @@ async def teletweet(telebot):
     await sticcers[0].click(
         telebot.chat_id,
         reply_to=telebot.reply_to_msg_id,
-        silent=True if telebot.is_reply else False,
+        silent=bool(telebot.is_reply),
         hide_via=True,
     )
+
     await telebot.delete()
 
 

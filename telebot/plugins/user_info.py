@@ -184,8 +184,7 @@ def inline_mention(user):
 def user_full_name(user):
     names = [user.first_name, user.last_name]
     names = [i for i in list(names) if i]
-    full_name = " ".join(names)
-    return full_name
+    return " ".join(names)
 
 
 class FormattedBase:
@@ -311,9 +310,6 @@ async def who(event: NewMessage.Event):
     user_info = await fetch_info(replied_user, **args)
 
     message_id_to_reply = event.message.reply_to_msg_id
-
-    if not message_id_to_reply:
-        pass
 
     await eor(event, str(user_info))
 

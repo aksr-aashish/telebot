@@ -28,7 +28,6 @@ from telebot.utils import admin_cmd
 @telebot.on(admin_cmd(pattern=r"remove\.bg ?(.*)"))
 @telebot.on(sudo_cmd(pattern=r"remove\.bg ?(.*)", allow_sudo=True))
 async def _(event):
-    HELP_STR = "`.remove.bg` as reply to a media, or give a link as an argument to this command"
     if event.fwd_from:
         return
     if Config.REM_BG_API_KEY is None:
@@ -60,6 +59,7 @@ async def _(event):
         await eor(event, "sending to ReMove.BG")
         output_file_name = ReTrieveURL(input_str)
     else:
+        HELP_STR = "`.remove.bg` as reply to a media, or give a link as an argument to this command"
         await eor(event, HELP_STR)
         return
     contentType = output_file_name.headers.get("content-type")
@@ -100,14 +100,13 @@ def ReTrieveFile(input_file_name):
     files = {
         "image_file": (input_file_name, open(input_file_name, "rb")),
     }
-    r = requests.post(
+    return requests.post(
         "https://api.remove.bg/v1.0/removebg",
         headers=headers,
         files=files,
         allow_redirects=True,
         stream=True,
     )
-    return r
 
 
 def ReTrieveURL(input_url):
@@ -115,14 +114,13 @@ def ReTrieveURL(input_url):
         "X-API-Key": Config.REM_BG_API_KEY,
     }
     data = {"image_url": input_url}
-    r = requests.post(
+    return requests.post(
         "https://api.remove.bg/v1.0/removebg",
         headers=headers,
         data=data,
         allow_redirects=True,
         stream=True,
     )
-    return r
 
 
 CMD_HELP.update(

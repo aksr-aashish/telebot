@@ -38,7 +38,7 @@ async def _(event):
             Var.PRIVATE_GROUP_ID, "#Auto_Name\nSuccessfully started AutoName"
         )
         await asyncio.sleep(DEL_TIME_OUT)
-    await event.edit(f"Auto Name has been started...")
+    await event.edit('Auto Name has been started...')
 
 
 CMD_HELP.update({"autoname": ".autoname\nUse - Auto changing profile name, with time."})

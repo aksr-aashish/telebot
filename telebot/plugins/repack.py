@@ -16,9 +16,8 @@ from telebot.utils import admin_cmd, sudo_cmd
 async def _(event):
     a = await event.get_reply_message()
     input_str = event.pattern_match.group(1)
-    b = open(input_str, "w")
-    b.write(str(a.message))
-    b.close()
+    with open(input_str, "w") as b:
+        b.write(str(a.message))
     a = await event.reply(f"**Packing into** `{input_str}`")
     await asyncio.sleep(2)
     await a.edit(f"**Uploading** `{input_str}`")

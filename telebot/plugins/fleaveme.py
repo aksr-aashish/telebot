@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 1
-
-    animation_ttl = range(0, 17)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "fleave":
@@ -45,6 +41,10 @@ async def _(event):
             "__Legend is leaving this chat.....!..__",
             "__Legend is leaving this chat.....!..__",
         ]
+
+        animation_interval = 1
+
+        animation_ttl = range(17)
 
         for i in animation_ttl:
 

@@ -14,8 +14,6 @@ from telebot.utils import admin_cmd
 async def _(event):
     if event.fwd_from:
         return
-    animation_interval = 0.3
-    animation_ttl = range(0, 5)
     input_str = event.pattern_match.group(1)
     if input_str == "gay":
         await event.edit(input_str)
@@ -27,6 +25,8 @@ async def _(event):
             "HI USRR , WAIT ARE YOU A GAY??😬",
         ]
 
+        animation_interval = 0.3
+        animation_ttl = range(5)
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)

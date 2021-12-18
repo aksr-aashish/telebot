@@ -12,9 +12,11 @@ async def _(event):
     data = covid.get_data()
     country = event.pattern_match.group(1)
     country_data = get_country_data(country, data)
-    output_text = ""
-    for name, value in country_data.items():
-        output_text += "`{}`: `{}`\n".format(str(name), str(value))
+    output_text = "".join(
+        "`{}`: `{}`\n".format(str(name), str(value))
+        for name, value in country_data.items()
+    )
+
     await eor(
         event,
         "**CoronaVirus Info in {}**:\n\n{}".format(country.capitalize(), output_text),

@@ -28,19 +28,12 @@ from telebot.plugins import telestats
 from telebot.telebotConfig import Var
 
 PMPERMIT_PIC = os.environ.get("PMPERMIT_PIC", None)
-TELEPIC = (
-    PMPERMIT_PIC
-    if PMPERMIT_PIC
-    else "https://telegra.ph/file/92cfbab6598148837c2e4.jpg"
-)
+TELEPIC = PMPERMIT_PIC or "https://telegra.ph/file/92cfbab6598148837c2e4.jpg"
 PM_WARNS = {}
 PREV_REPLY_MESSAGE = {}
 myid = bot.uid
 mybot = Var.TG_BOT_USER_NAME_BF_HER
-if mybot.startswith("@"):
-    botname = mybot
-else:
-    botname = f"@{mybot}"
+botname = mybot if mybot.startswith("@") else f"@{mybot}"
 LOG_GP = Var.PRIVATE_GROUP_ID
 MESAG = (
     str(CUSTOM_PMPERMIT)
@@ -50,16 +43,7 @@ MESAG = (
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "TeleBot User"
 USER_BOT_WARN_ZERO = "`I had warned you not to spam. Now you have been blocked and reported until further notice.`\n\n**GoodBye!** "
 
-if Var.LOAD_MYBOT == "True":
-    USER_BOT_NO_WARN = (
-        "**PM Security of [{}](tg://user?id={})**\n\n"
-        "{}\n\n"
-        "For immediate help, PM me via {}"
-        "\nPlease choose why you are here, from the available options\n\n".format(
-            DEFAULTUSER, myid, MESAG, botname
-        )
-    )
-elif Var.LOAD_MYBOT == "False":
+if Var.LOAD_MYBOT == "False":
     USER_BOT_NO_WARN = (
         "**PM Security of [{}](tg://user?id={})**\n\n"
         "{}\n"
@@ -68,6 +52,15 @@ elif Var.LOAD_MYBOT == "False":
         )
     )
 
+elif Var.LOAD_MYBOT == "True":
+    USER_BOT_NO_WARN = (
+        "**PM Security of [{}](tg://user?id={})**\n\n"
+        "{}\n\n"
+        "For immediate help, PM me via {}"
+        "\nPlease choose why you are here, from the available options\n\n".format(
+            DEFAULTUSER, myid, MESAG, botname
+        )
+    )
 CUSTOM_HELP_EMOJI = os.environ.get("CUSTOM_HELP_EMOJI", "⚡")
 HELP_ROWS = int(os.environ.get("HELP_ROWS", 5))
 HELP_COLOUMNS = int(os.environ.get("HELP_COLOUMNS", 3))
@@ -120,7 +113,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         elif event.query.user_id == bot.uid and query == "repo":
             result = builder.article(
                 title="Repository",
-                text=f"TeleBot - Telegram Userbot.",
+                text='TeleBot - Telegram Userbot.',
                 buttons=[
                     [
                         Button.url("Repo", "https://github.com/xditya/TeleBot"),
@@ -132,6 +125,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                     [Button.url("Support", "https://t.me/TeleBotSupport")],
                 ],
             )
+
         else:
             result = builder.article(
                 "Source Code",
@@ -252,8 +246,9 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
         else:
             await event.edit(
-                f"Oh, so you are here to spam 😤\nGoodbye.\nYour message has been read and successfully ignored."
+                'Oh, so you are here to spam 😤\nGoodbye.\nYour message has been read and successfully ignored.'
             )
+
             await borg(functions.contacts.BlockRequest(event.query.user_id))
             target = await event.client(GetFullUserRequest(event.query.user_id))
             ok = event.query.user_id
@@ -348,10 +343,7 @@ def paginate_help(page_number, loaded_plugins, prefix):
     number_of_rows = HELP_ROWS
     number_of_cols = HELP_COLOUMNS
     tele = CUSTOM_HELP_EMOJI
-    helpable_plugins = []
-    for p in loaded_plugins:
-        if not p.startswith("_"):
-            helpable_plugins.append(p)
+    helpable_plugins = [p for p in loaded_plugins if not p.startswith("_")]
     helpable_plugins = sorted(helpable_plugins)
     modules = [
         custom.Button.inline(

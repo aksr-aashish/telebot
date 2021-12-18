@@ -22,10 +22,7 @@ async def lst(event):
     if event.fwd_from:
         return
     tele = event.pattern_match.group(1)
-    if tele:
-        path = tele
-    else:
-        path = os.getcwd()
+    path = tele or os.getcwd()
     if not exists(path):
         await eor(
             event,
@@ -35,10 +32,9 @@ async def lst(event):
     if isdir(path):
         if tele:
             msg = "Folders and Files in `{}` :\n\n".format(path)
-            lists = os.listdir(path)
         else:
             msg = "Folders and Files in Current Directory :\n\n"
-            lists = os.listdir(path)
+        lists = os.listdir(path)
         files = ""
         folders = ""
         for contents in sorted(lists):

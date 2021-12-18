@@ -644,18 +644,20 @@ HIT = [
 @telebot.on(admin_cmd(outgoing=True, pattern=r"(\w+)say (.*)"))
 async def univsaye(cowmsg):
     """ For .cowsay module, userbot wrapper for cow which says things. """
-    if not cowmsg.text[0].isalpha() and cowmsg.text[0] not in ("/", "#", "@", "!"):
-        arg = cowmsg.pattern_match.group(1).lower()
-        text = cowmsg.pattern_match.group(2)
+    if cowmsg.text[0].isalpha() or cowmsg.text[0] in ("/", "#", "@", "!"):
+        return
 
-        if arg == "cow":
-            arg = "default"
-        if arg not in cow.COWACTERS:
-            return
-        cheese = cow.get_cow(arg)
-        cheese = cheese()
+    arg = cowmsg.pattern_match.group(1).lower()
+    text = cowmsg.pattern_match.group(2)
 
-        await cowmsg.edit(f"`{cheese.milk(text).replace('`', '´')}`")
+    if arg == "cow":
+        arg = "default"
+    if arg not in cow.COWACTERS:
+        return
+    cheese = cow.get_cow(arg)
+    cheese = cheese()
+
+    await cowmsg.edit(f"`{cheese.milk(text).replace('`', '´')}`")
 
 
 @telebot.on(admin_cmd(outgoing=True, pattern=":/"))
@@ -670,56 +672,58 @@ async def kek(keks):
 
 @telebot.on(admin_cmd(outgoing=True, pattern=r"coinflip (.*)"))
 async def _(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
-        if event.fwd_from:
-            return
-        r = random.randint(1, 100)
-        input_str = event.pattern_match.group(1)
-        if input_str:
-            input_str = input_str.lower()
-        if r % 2 == 1:
-            if input_str == "heads":
-                await event.edit("The coin landed on: **Heads**.\nYou were correct.")
-            elif input_str == "tails":
-                await event.edit(
-                    "The coin landed on: **Heads**.\nYou weren't correct, try again ..."
-                )
-            else:
-                await event.edit("The coin landed on: **Heads**.")
-        elif r % 2 == 0:
-            if input_str == "tails":
-                await event.edit("The coin landed on: **Tails**.\nYou were correct.")
-            elif input_str == "heads":
-                await event.edit(
-                    "The coin landed on: **Tails**.\nYou weren't correct, try again ..."
-                )
-            else:
-                await event.edit("The coin landed on: **Tails**.")
+    if event.text[0].isalpha() or event.text[0] in ("/", "#", "@", "!"):
+        return
+    if event.fwd_from:
+        return
+    r = random.randint(1, 100)
+    input_str = event.pattern_match.group(1)
+    if input_str:
+        input_str = input_str.lower()
+    if r % 2 == 1:
+        if input_str == "heads":
+            await event.edit("The coin landed on: **Heads**.\nYou were correct.")
+        elif input_str == "tails":
+            await event.edit(
+                "The coin landed on: **Heads**.\nYou weren't correct, try again ..."
+            )
         else:
-            await event.edit("Gimme another coin, this one fake AF !!")
+            await event.edit("The coin landed on: **Heads**.")
+    elif r % 2 == 0:
+        if input_str == "tails":
+            await event.edit("The coin landed on: **Tails**.\nYou were correct.")
+        elif input_str == "heads":
+            await event.edit(
+                "The coin landed on: **Tails**.\nYou weren't correct, try again ..."
+            )
+        else:
+            await event.edit("The coin landed on: **Tails**.")
+    else:
+        await event.edit("Gimme another coin, this one fake AF !!")
 
 
 @telebot.on(admin_cmd(pattern="slap(?: |$)(.*)", outgoing=True))
 async def who(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
-        """ slaps a user, or get slapped if not a reply. """
-        if event.fwd_from:
-            return
+    if event.text[0].isalpha() or event.text[0] in ("/", "#", "@", "!"):
+        return
+    """ slaps a user, or get slapped if not a reply. """
+    if event.fwd_from:
+        return
 
-        replied_user = await get_user(event)
-        caption = await slap(replied_user, event)
-        message_id_to_reply = event.message.reply_to_msg_id
+    replied_user = await get_user(event)
+    caption = await slap(replied_user, event)
+    message_id_to_reply = event.message.reply_to_msg_id
 
-        if not message_id_to_reply:
-            message_id_to_reply = None
+    if not message_id_to_reply:
+        message_id_to_reply = None
 
-        try:
-            await event.edit(caption)
+    try:
+        await event.edit(caption)
 
-        except BaseException:
-            await event.edit(
-                "`Can't slap this person, need to fetch some sticks and stones !!`"
-            )
+    except BaseException:
+        await event.edit(
+            "`Can't slap this person, need to fetch some sticks and stones !!`"
+        )
 
 
 async def get_user(event):
@@ -771,9 +775,7 @@ async def slap(replied_user, event):
     hit = random.choice(HIT)
     throw = random.choice(THROW)
 
-    caption = "..." + temp.format(victim=slapped, item=item, hits=hit, throws=throw)
-
-    return caption
+    return "..." + temp.format(victim=slapped, item=item, hits=hit, throws=throw)
 
 
 @register(outgoing=True, pattern="^-_-$")
@@ -808,7 +810,7 @@ async def _(event):
 async def fun(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         t = ";__;"
-        for j in range(10):
+        for _ in range(10):
             t = t[:-1] + "_;"
             await e.edit(t)
 
@@ -830,62 +832,63 @@ async def insult(e):
 @telebot.on(admin_cmd(outgoing=True, pattern="cp(?: |$)(.*)"))
 async def copypasta(cp_e):
     """ Copypasta the famous meme """
-    if not cp_e.text[0].isalpha() and cp_e.text[0] not in ("/", "#", "@", "!"):
-        textx = await cp_e.get_reply_message()
-        message = cp_e.pattern_match.group(1)
+    if cp_e.text[0].isalpha() or cp_e.text[0] in ("/", "#", "@", "!"):
+        return
 
-        if message:
-            pass
-        elif textx:
-            message = textx.text
+    textx = await cp_e.get_reply_message()
+    message = cp_e.pattern_match.group(1)
+
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await cp_e.edit("`😂🅱️IvE👐sOME👅text👅for✌️Me👌tO👐MAkE👀iT💞funNy!💦`")
+        return
+
+    reply_text = random.choice(EMOJIS)
+    # choose a random character in the message to be substituted with 🅱️
+    b_char = random.choice(message).lower()
+    for owo in message:
+        if owo == " ":
+            reply_text += random.choice(EMOJIS)
+        elif owo in EMOJIS:
+            reply_text += owo
+            reply_text += random.choice(EMOJIS)
+        elif owo.lower() == b_char:
+            reply_text += "🅱️"
         else:
-            await cp_e.edit("`😂🅱️IvE👐sOME👅text👅for✌️Me👌tO👐MAkE👀iT💞funNy!💦`")
-            return
-
-        reply_text = random.choice(EMOJIS)
-        # choose a random character in the message to be substituted with 🅱️
-        b_char = random.choice(message).lower()
-        for owo in message:
-            if owo == " ":
-                reply_text += random.choice(EMOJIS)
-            elif owo in EMOJIS:
-                reply_text += owo
-                reply_text += random.choice(EMOJIS)
-            elif owo.lower() == b_char:
-                reply_text += "🅱️"
-            else:
-                if bool(random.getrandbits(1)):
-                    reply_text += owo.upper()
-                else:
-                    reply_text += owo.lower()
-        reply_text += random.choice(EMOJIS)
-        await cp_e.edit(reply_text)
+            reply_text += owo.upper() if bool(random.getrandbits(1)) else owo.lower()
+    reply_text += random.choice(EMOJIS)
+    await cp_e.edit(reply_text)
 
 
 @telebot.on(admin_cmd(outgoing=True, pattern="vapor(?: |$)(.*)"))
 async def vapor(vpr):
     """ Vaporize everything! """
-    if not vpr.text[0].isalpha() and vpr.text[0] not in ("/", "#", "@", "!"):
-        reply_text = list()
-        textx = await vpr.get_reply_message()
-        message = vpr.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
+    if vpr.text[0].isalpha() or vpr.text[0] in ("/", "#", "@", "!"):
+        return
+
+    reply_text = []
+    textx = await vpr.get_reply_message()
+    message = vpr.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await vpr.edit("`Ｇｉｖｅ ｓｏｍｅ ｔｅｘｔ ｆｏｒ ｖａｐｏｒ！`")
+        return
+
+    for charac in message:
+        if 0x21 <= ord(charac) <= 0x7F:
+            reply_text.append(chr(ord(charac) + 0xFEE0))
+        elif ord(charac) == 0x20:
+            reply_text.append(chr(0x3000))
         else:
-            await vpr.edit("`Ｇｉｖｅ ｓｏｍｅ ｔｅｘｔ ｆｏｒ ｖａｐｏｒ！`")
-            return
+            reply_text.append(charac)
 
-        for charac in message:
-            if 0x21 <= ord(charac) <= 0x7F:
-                reply_text.append(chr(ord(charac) + 0xFEE0))
-            elif ord(charac) == 0x20:
-                reply_text.append(chr(0x3000))
-            else:
-                reply_text.append(charac)
-
-        await vpr.edit("".join(reply_text))
+    await vpr.edit("".join(reply_text))
 
 
 @telebot.on(admin_cmd(outgoing=True, pattern="repo"))
@@ -925,38 +928,40 @@ async def stretch(stret):
 @telebot.on(admin_cmd(outgoing=True, pattern="zal(?: |$)(.*)"))
 async def zal(zgfy):
     """ Invoke the feeling of chaos. """
-    if not zgfy.text[0].isalpha() and zgfy.text[0] not in ("/", "#", "@", "!"):
-        reply_text = list()
-        textx = await zgfy.get_reply_message()
-        message = zgfy.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
-        else:
-            await zgfy.edit(
-                "`gͫ ̆ i̛ ̺ v͇̆ ȅͅ   a̢ͦ   s̴̪ c̸̢ ä̸ rͩͣ y͖͞   t̨͚ é̠ x̢͖  t͔͛`"
-            )
-            return
+    if zgfy.text[0].isalpha() or zgfy.text[0] in ("/", "#", "@", "!"):
+        return
 
-        for charac in message:
-            if not charac.isalpha():
-                reply_text.append(charac)
-                continue
+    reply_text = []
+    textx = await zgfy.get_reply_message()
+    message = zgfy.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await zgfy.edit(
+            "`gͫ ̆ i̛ ̺ v͇̆ ȅͅ   a̢ͦ   s̴̪ c̸̢ ä̸ rͩͣ y͖͞   t̨͚ é̠ x̢͖  t͔͛`"
+        )
+        return
 
-            for _ in range(0, 3):
-                randint = random.randint(0, 2)
-
-                if randint == 0:
-                    charac = charac.strip() + random.choice(ZALG_LIST[0]).strip()
-                elif randint == 1:
-                    charac = charac.strip() + random.choice(ZALG_LIST[1]).strip()
-                else:
-                    charac = charac.strip() + random.choice(ZALG_LIST[2]).strip()
-
+    for charac in message:
+        if not charac.isalpha():
             reply_text.append(charac)
+            continue
 
-        await zgfy.edit("".join(reply_text))
+        for _ in range(3):
+            randint = random.randint(0, 2)
+
+            if randint == 0:
+                charac = charac.strip() + random.choice(ZALG_LIST[0]).strip()
+            elif randint == 1:
+                charac = charac.strip() + random.choice(ZALG_LIST[1]).strip()
+            else:
+                charac = charac.strip() + random.choice(ZALG_LIST[2]).strip()
+
+        reply_text.append(charac)
+
+    await zgfy.edit("".join(reply_text))
 
 
 @telebot.on(admin_cmd(outgoing=True, pattern="hi"))
@@ -976,22 +981,28 @@ async def hi(event):
 @telebot.on(admin_cmd(outgoing=True, pattern="kill"))
 async def killing(killed):
     """ Dont Kill Too much -_-"""
-    if not killed.text[0].isalpha() and killed.text[0] not in ("/", "#", "@", "!"):
-        if await killed.get_reply_message():
-            await killed.edit(
-                "`Targeted user killed by Headshot 😈......`\n" "#Sad_Reacts_Onli\n"
-            )
+    if (
+        not killed.text[0].isalpha()
+        and killed.text[0] not in ("/", "#", "@", "!")
+        and await killed.get_reply_message()
+    ):
+        await killed.edit(
+            "`Targeted user killed by Headshot 😈......`\n" "#Sad_Reacts_Onli\n"
+        )
 
 
 @register(outgoing=True, pattern="^.bt$")
 async def bluetext(bte):
     """ Believe me, you will find this useful. """
-    if not bte.text[0].isalpha() and bte.text[0] not in ("/", "#", "@", "!"):
-        if await bte.get_reply_message():
-            await bte.edit(
-                "`BLUETEXT MUST CLICK.`\n"
-                "`Are you a stupid animal which is attracted to colours?`"
-            )
+    if (
+        not bte.text[0].isalpha()
+        and bte.text[0] not in ("/", "#", "@", "!")
+        and await bte.get_reply_message()
+    ):
+        await bte.edit(
+            "`BLUETEXT MUST CLICK.`\n"
+            "`Are you a stupid animal which is attracted to colours?`"
+        )
 
 
 @register(outgoing=True, pattern="^.rape$")
@@ -1134,7 +1145,7 @@ async def metoo(hahayes):
 async def Oof(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         t = "Oof"
-        for j in range(15):
+        for _ in range(15):
             t = t[:-1] + "of"
             await e.edit(t)
 
@@ -1172,26 +1183,28 @@ async def _(event):
 @register(outgoing=True, pattern="^.mock(?: |$)(.*)")
 async def spongemocktext(mock):
     """ Do it and find the real fun. """
-    if not mock.text[0].isalpha() and mock.text[0] not in ("/", "#", "@", "!"):
-        reply_text = list()
-        textx = await mock.get_reply_message()
-        message = mock.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
+    if mock.text[0].isalpha() or mock.text[0] in ("/", "#", "@", "!"):
+        return
+
+    reply_text = []
+    textx = await mock.get_reply_message()
+    message = mock.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await mock.edit("`gIvE sOMEtHInG tO MoCk!`")
+        return
+
+    for charac in message:
+        if charac.isalpha() and random.randint(0, 1):
+            to_app = charac.upper() if charac.islower() else charac.lower()
+            reply_text.append(to_app)
         else:
-            await mock.edit("`gIvE sOMEtHInG tO MoCk!`")
-            return
+            reply_text.append(charac)
 
-        for charac in message:
-            if charac.isalpha() and random.randint(0, 1):
-                to_app = charac.upper() if charac.islower() else charac.lower()
-                reply_text.append(to_app)
-            else:
-                reply_text.append(charac)
-
-        await mock.edit("".join(reply_text))
+    await mock.edit("".join(reply_text))
 
 
 @register(outgoing=True, pattern="^.clap(?: |$)(.*)")
@@ -1221,12 +1234,15 @@ async def claptext(memereview):
 @register(outgoing=True, pattern="^.bt$")
 async def bluetext(bt_e):
     """ Believe me, you will find this useful. """
-    if not bt_e.text[0].isalpha() and bt_e.text[0] not in ("/", "#", "@", "!"):
-        if await bt_e.get_reply_message():
-            await bt_e.edit(
-                "`BLUETEXT MUST CLICK.`\n"
-                "`Are you a stupid animal which is attracted to colours?`"
-            )
+    if (
+        not bt_e.text[0].isalpha()
+        and bt_e.text[0] not in ("/", "#", "@", "!")
+        and await bt_e.get_reply_message()
+    ):
+        await bt_e.edit(
+            "`BLUETEXT MUST CLICK.`\n"
+            "`Are you a stupid animal which is attracted to colours?`"
+        )
 
 
 @register(outgoing=True, pattern="^.smk (.*)")
@@ -1269,119 +1285,124 @@ async def payf(e):
     pattern="^.lfy (.*)",
 )
 async def let_me_google_that_for_you(lmgtfy_q):
-    if not lmgtfy_q.text[0].isalpha() and lmgtfy_q.text[0] not in ("/", "#", "@", "!"):
-        textx = await lmgtfy_q.get_reply_message()
-        query = lmgtfy_q.text
-        if query[5:]:
-            query = str(query[5:])
-        elif textx:
-            query = textx
-            query = query.message
-        query_encoded = query.replace(" ", "+")
-        lfy_url = f"http://lmgtfy.com/?s=g&iie=1&q={query_encoded}"
-        payload = {"format": "json", "url": lfy_url}
-        r = requests.get("http://is.gd/create.php", params=payload)
-        await lmgtfy_q.edit(f"[{query}]({r.json()['shorturl']})")
-        if BOTLOG:
-            await bot.send_message(
-                BOTLOG_CHATID,
-                "LMGTFY query `" + query + "` was executed successfully",
-            )
+    if lmgtfy_q.text[0].isalpha() or lmgtfy_q.text[0] in ("/", "#", "@", "!"):
+        return
+    textx = await lmgtfy_q.get_reply_message()
+    query = lmgtfy_q.text
+    if query[5:]:
+        query = str(query[5:])
+    elif textx:
+        query = textx
+        query = query.message
+    query_encoded = query.replace(" ", "+")
+    lfy_url = f"http://lmgtfy.com/?s=g&iie=1&q={query_encoded}"
+    payload = {"format": "json", "url": lfy_url}
+    r = requests.get("http://is.gd/create.php", params=payload)
+    await lmgtfy_q.edit(f"[{query}]({r.json()['shorturl']})")
+    if BOTLOG:
+        await bot.send_message(
+            BOTLOG_CHATID,
+            "LMGTFY query `" + query + "` was executed successfully",
+        )
 
 
 @register(outgoing=True, pattern=r".yt_dl (\S*) ?(\S*)")
 async def download_video(v_url):
     """ For .yt_dl command, download videos from YouTube. """
-    if not v_url.text[0].isalpha() and v_url.text[0] not in ("/", "#", "@", "!"):
-        url = v_url.pattern_match.group(1)
-        quality = v_url.pattern_match.group(2)
+    if v_url.text[0].isalpha() or v_url.text[0] in ("/", "#", "@", "!"):
+        return
 
-        await v_url.edit("**Fetching...**")
+    url = v_url.pattern_match.group(1)
+    quality = v_url.pattern_match.group(2)
 
-        video = YouTube(url)
+    await v_url.edit("**Fetching...**")
 
-        if quality:
-            video_stream = video.streams.filter(
-                progressive=True, subtype="mp4", res=quality
-            ).first()
-        else:
-            video_stream = video.streams.filter(progressive=True, subtype="mp4").first()
+    video = YouTube(url)
 
-        if video_stream is None:
-            all_streams = video.streams.filter(progressive=True, subtype="mp4").all()
-            available_qualities = ""
+    if quality:
+        video_stream = video.streams.filter(
+            progressive=True, subtype="mp4", res=quality
+        ).first()
+    else:
+        video_stream = video.streams.filter(progressive=True, subtype="mp4").first()
 
-            for item in all_streams[:-1]:
-                available_qualities += f"{item.resolution}, "
-            available_qualities += all_streams[-1].resolution
-
-            await v_url.edit(
-                "**A stream matching your query wasn't found. Try again with different options.\n**"
-                "**Available Qualities:**\n"
-                f"{available_qualities}"
-            )
-            return
-
-        video_size = video_stream.filesize / 1000000
-
-        if video_size >= 50:
-            await v_url.edit(
-                (
-                    "**File larger than 50MB. Sending the link instead.\n**"
-                    f"Get the video [here]({video_stream.url})\n\n"
-                    "**If the video plays instead of downloading, right click(or long press on touchscreen) and "
-                    "press 'Save Video As...'(may depend on the browser) to download the video.**"
-                )
-            )
-            return
-
-        await v_url.edit("**Downloading...**")
-
-        video_stream.download(filename=video.title)
-
-        url = f"https://img.youtube.com/vi/{video.video_id}/maxresdefault.jpg"
-        resp = get(url)
-        with open("thumbnail.jpg", "wb") as file:
-            file.write(resp.content)
-
-        await v_url.edit("**Uploading...**")
-        await v_url.client.send_file(
-            v_url.chat_id,
-            f"{safe_filename(video.title)}.mp4",
-            caption=f"{video.title}",
-            thumb="thumbnail.jpg",
+    if video_stream is None:
+        all_streams = video.streams.filter(progressive=True, subtype="mp4").all()
+        available_qualities = "".join(
+            f"{item.resolution}, " for item in all_streams[:-1]
         )
 
-        os.remove(f"{safe_filename(video.title)}.mp4")
-        os.remove("thumbnail.jpg")
-        await v_url.delete()
+
+        available_qualities += all_streams[-1].resolution
+
+        await v_url.edit(
+            "**A stream matching your query wasn't found. Try again with different options.\n**"
+            "**Available Qualities:**\n"
+            f"{available_qualities}"
+        )
+        return
+
+    video_size = video_stream.filesize / 1000000
+
+    if video_size >= 50:
+        await v_url.edit(
+            (
+                "**File larger than 50MB. Sending the link instead.\n**"
+                f"Get the video [here]({video_stream.url})\n\n"
+                "**If the video plays instead of downloading, right click(or long press on touchscreen) and "
+                "press 'Save Video As...'(may depend on the browser) to download the video.**"
+            )
+        )
+        return
+
+    await v_url.edit("**Downloading...**")
+
+    video_stream.download(filename=video.title)
+
+    url = f"https://img.youtube.com/vi/{video.video_id}/maxresdefault.jpg"
+    resp = get(url)
+    with open("thumbnail.jpg", "wb") as file:
+        file.write(resp.content)
+
+    await v_url.edit("**Uploading...**")
+    await v_url.client.send_file(
+        v_url.chat_id,
+        f"{safe_filename(video.title)}.mp4",
+        caption=f"{video.title}",
+        thumb="thumbnail.jpg",
+    )
+
+    os.remove(f"{safe_filename(video.title)}.mp4")
+    os.remove("thumbnail.jpg")
+    await v_url.delete()
 
 
 @register(pattern=".type(?: |$)(.*)")
 async def typewriter(typew):
     """ Just a small command to make your keyboard become a typewriter! """
-    if not typew.text[0].isalpha() and typew.text[0] not in ("/", "#", "@", "!"):
-        textx = await typew.get_reply_message()
-        message = typew.pattern_match.group(1)
-        if message:
-            pass
-        elif textx:
-            message = textx.text
-        else:
-            await typew.edit("`Give a text to type!`")
-            return
-        sleep_time = 0.03
-        typing_symbol = "|"
-        old_text = ""
-        await typew.edit(typing_symbol)
+    if typew.text[0].isalpha() or typew.text[0] in ("/", "#", "@", "!"):
+        return
+    textx = await typew.get_reply_message()
+    message = typew.pattern_match.group(1)
+    if message:
+        pass
+    elif textx:
+        message = textx.text
+    else:
+        await typew.edit("`Give a text to type!`")
+        return
+    sleep_time = 0.03
+    typing_symbol = "|"
+    old_text = ""
+    await typew.edit(typing_symbol)
+    await asyncio.sleep(sleep_time)
+    for character in message:
+        old_text = old_text + "" + character
+        typing_text = old_text + "" + typing_symbol
+        await typew.edit(typing_text)
         await asyncio.sleep(sleep_time)
-        for character in message:
-            old_text = old_text + "" + character
-            typing_text = old_text + "" + typing_symbol
-            await typew.edit(typing_text)
-            await asyncio.sleep(sleep_time)
-            await typew.edit(old_text)
-            await asyncio.sleep(sleep_time)
+        await typew.edit(old_text)
+        await asyncio.sleep(sleep_time)
 
 
 @telebot.on(events.NewMessage(pattern=r"\.(.*)", outgoing=True))
@@ -1390,10 +1411,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 101)
 
     input_str = event.pattern_match.group(1)
 
@@ -1412,6 +1429,10 @@ async def _(event):
             "PORNHUB",
         ]
 
+        animation_interval = 0.5
+
+        animation_ttl = range(101)
+
         for i in animation_ttl:
 
             await asyncio.sleep(animation_interval)
@@ -1425,10 +1446,6 @@ async def _(event):
     if event.fwd_from:
 
         return
-
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 101)
 
     input_str = event.pattern_match.group(1)
 
@@ -1445,6 +1462,10 @@ async def _(event):
             "AMORE❤_",
             ".-.",
         ]
+
+        animation_interval = 0.5
+
+        animation_ttl = range(101)
 
         for i in animation_ttl:
 
@@ -1473,10 +1494,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 101)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "sexy":
@@ -1491,6 +1508,10 @@ async def _(event):
             "SEXY👄_",
             "SEXY👄",
         ]
+
+        animation_interval = 0.5
+
+        animation_ttl = range(101)
 
         for i in animation_ttl:
 

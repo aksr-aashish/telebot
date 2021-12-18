@@ -9,6 +9,7 @@
 This module is used for updating TeleBot
 """
 
+
 import asyncio
 import sys
 from os import environ, execle, path, remove
@@ -27,15 +28,15 @@ HEROKU_APP_NAME = Var.HEROKU_APP_NAME
 GIT_REPO_NAME = "TeleBot"
 UPSTREAM_REPO_URL = "https://github.com/xditya/TeleBot"
 
-xxxx = CMD_HNDLR if CMD_HNDLR else "."
+xxxx = CMD_HNDLR or "."
 
 
 async def gen_chlog(repo, diff):
-    ch_log = ""
     d_form = "On " + "%d/%m/%y" + " at " + "%H:%M:%S"
-    for c in repo.iter_commits(diff):
-        ch_log += f"**#{c.count()}** : {c.committed_datetime.strftime(d_form)} : [{c.summary}]({UPSTREAM_REPO_URL.rstrip('/')}/commit/{c}) by **{c.author}**\n"
-    return ch_log
+    return "".join(
+        f"**#{c.count()}** : {c.committed_datetime.strftime(d_form)} : [{c.summary}]({UPSTREAM_REPO_URL.rstrip('/')}/commit/{c}) by **{c.author}**\n"
+        for c in repo.iter_commits(diff)
+    )
 
 
 async def updateme_requirements():
@@ -61,8 +62,11 @@ async def upstream(ups):
     force_updateme = False
 
     try:
-        txt = "`Oops.. Updater cannot continue as "
-        txt += "some problems occured`\n\n**LOGTRACE:**\n"
+        txt = (
+            "`Oops.. Updater cannot continue as "
+            + "some problems occured`\n\n**LOGTRACE:**\n"
+        )
+
         repo = Repo()
     except NoSuchPathError as error:
         await ups.edit(f"{txt}\n`directory {error} is not found`")
@@ -124,9 +128,8 @@ async def upstream(ups):
         )
         if len(changelog_str) > 4096:
             await ups.edit("`Changelog is too big, view the file to see it.`")
-            file = open("output.txt", "w+")
-            file.write(changelog_str)
-            file.close()
+            with open("output.txt", "w+") as file:
+                file.write(changelog_str)
             await ups.client.send_file(
                 ups.chat_id,
                 "output.txt",

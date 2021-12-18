@@ -108,7 +108,7 @@ async def _(event):
 
         os.remove(required_file_name)
 
-        await eor(event, "Processed {} ({}) in {} seconds!".format(text[0:97], lan, ms))
+        await eor(event, "Processed {} ({}) in {} seconds!".format(text[:97], lan, ms))
 
         await asyncio.sleep(5)
 

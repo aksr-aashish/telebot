@@ -66,7 +66,7 @@ async def get_id(link):  # Extract File Id from G-Drive Link
         for c in link:
             if c == "/":
                 break
-            fid = fid + c
+            fid += c
         return fid
     for c in link:
         if c == "=":
@@ -74,7 +74,7 @@ async def get_id(link):  # Extract File Id from G-Drive Link
         if c == "&":
             break
         if c_append:
-            file_id = file_id + c
+            file_id += c
     file_id = file_id[1:]
     return file_id
 
@@ -83,19 +83,19 @@ async def get_file_name(content):
     file_name = ""
     c_append = False
     for c in str(content):
-        if c == '"':
-            c_append = True
         if c == ";":
             c_append = False
+        elif c == '"':
+            c_append = True
         if c_append:
-            file_name = file_name + c
+            file_name += c
     file_name = file_name.replace('"', "")
     print("File Name: " + str(file_name))
     return file_name
 
 
 @telebot.on(admin_cmd(pattern=f"gdl", outgoing=True))
-@telebot.on(sudo_cmd(pattern=f"gdl", allow_sudo=True))
+@telebot.on(sudo_cmd(pattern='gdl', allow_sudo=True))
 async def g_download(event):
     if event.fwd_from:
         return
@@ -190,19 +190,19 @@ async def mega_downloader(megadl):
         try:
             raise FileExistsError(errno.EEXIST, os.strerror(errno.EEXIST), file_path)
         except FileExistsError as e:
-            await megadl.edit(f"`{str(e)}`")
+            await megadl.edit(f'`{e}`')
             return None
     downloader = SmartDL(file_url, temp_file_path, progress_bar=False)
     display_message = None
     try:
         downloader.start(blocking=False)
     except HTTPError as e:
-        await megadl.edit(f"**HTTPError**: `{str(e)}`")
+        await megadl.edit(f'**HTTPError**: `{e}`')
         return None
     start = time.time()
     while not downloader.isFinished():
         status = downloader.get_status().capitalize()
-        total_length = downloader.filesize if downloader.filesize else None
+        total_length = downloader.filesize or None
         downloaded = downloader.get_dl_size()
         percentage = int(downloader.get_progress() * 100)
         speed = downloader.get_speed(human=True)
@@ -248,7 +248,7 @@ async def mega_downloader(megadl):
             P.start()
             P.join()
         except FileNotFoundError as e:
-            await megadl.edit(f"`{str(e)}`")
+            await megadl.edit(f'`{e}`')
             return None
         else:
             await megadl.edit(

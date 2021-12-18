@@ -23,10 +23,6 @@ async def _(event):
 
         return
 
-    animation_interval = 3
-
-    animation_ttl = range(0, 18)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "call":
@@ -53,6 +49,10 @@ async def _(event):
             "`Pavel: Sure Sur \nTC Bye Bye :)`",
             "`Private Call Disconnected.`",
         ]
+
+        animation_interval = 3
+
+        animation_ttl = range(18)
 
         for i in animation_ttl:
 

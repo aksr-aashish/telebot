@@ -208,9 +208,7 @@ async def slap(replied_user, event):
 
     temp = random.choice(SLAP_TEMPLATES)
 
-    caption = temp.format(user1=DEFAULTUSER, victim=slapped)
-
-    return caption
+    return temp.format(user1=DEFAULTUSER, victim=slapped)
 
 
 @telebot.on(admin_cmd(outgoing=True, pattern="mrape"))

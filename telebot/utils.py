@@ -10,8 +10,8 @@ import re
 import logging
 import inspect
 
-handler = Var.CMD_HNDLR if Var.CMD_HNDLR else r"\."
-sudo_hndlr = Var.SUDO_HNDLR if Var.SUDO_HNDLR else "!"
+handler = Var.CMD_HNDLR or r"\."
+sudo_hndlr = Var.SUDO_HNDLR or "!"
 
 
 def command(**args):

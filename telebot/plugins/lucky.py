@@ -18,10 +18,6 @@ async def _(event):
 
         return
 
-    animation_interval = 0.5
-
-    animation_ttl = range(0, 17)
-
     input_str = event.pattern_match.group(1)
 
     if input_str == "lucky":
@@ -47,6 +43,10 @@ async def _(event):
             "⬜⬜\n⬜⬜",
             "[🎁](https://github.com/xditya/TeleBot/)",
         ]
+
+        animation_interval = 0.5
+
+        animation_ttl = range(17)
 
         for i in animation_ttl:
 

@@ -22,7 +22,6 @@ from telebot.utils import admin_cmd
 
 
 def subprocess_run(cmd):
-    reply = ""
     subproc = Popen(
         cmd,
         stdout=PIPE,
@@ -34,6 +33,7 @@ def subprocess_run(cmd):
     talk = subproc.communicate()
     exitCode = subproc.returncode
     if exitCode != 0:
+        reply = ""
         reply += (
             "```An error was detected while running the subprocess:\n"
             f"exit code: {exitCode}\n"
